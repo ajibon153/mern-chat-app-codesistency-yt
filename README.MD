@@ -2,12 +2,6 @@
 
 ## ABOUT
 
-hosting project on sevalla, that can run the both frontend and backend application just in one same repo project (not separrated frontend and backend) so it will run from root package.json
-
-sevalla login account using github account
-
-![Demo App](/frontend/public/screenshot-for-readme.png)
-
 ### Highlights:
 
 - 🔐 Custom JWT Authentication (no 3rd-party auth)
@@ -23,6 +17,21 @@ sevalla login account using github account
 - 🧠 Zustand for State Management
 - 🧑‍💻 Git & GitHub Workflow (branches, PRs, merges)
 - 🚀 Easy Deployment (free-tier friendly with Sevalla)
+
+---
+
+1. hosting project on sevalla (Not Implemented Yet because trial)
+   that can run the both frontend and backend application just in one same repo project (not separrated frontend and backend) so it will run from root package.json
+
+sevalla login account using github account
+
+2. Resend (aj**\*\*\***2@gmail.com)
+   to send an email to user that successed register to our website
+
+3. cloudinary (aj\*\*\*\*\*\*g@gmail.com)
+   image cdn
+
+![Demo App](/frontend/public/screenshot-for-readme.png)
 
 ---
 

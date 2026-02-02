@@ -91,7 +91,15 @@ export const login = async (req, res) => {
         res.status(500).json({ message: "Server Error in login controller: " + error })
     }
 }
+
 export const logout = async (req, res) => {
+    res.cookie("jwt", "", {
+        maxAge: 0 // expire the cookie immediately
+    })
+    res.status(200).json({ message: "Logout successful" })
+}
+
+export const updateProfile = async (req, res) => {
     res.cookie("jwt", "", {
         maxAge: 0 // expire the cookie immediately
     })
