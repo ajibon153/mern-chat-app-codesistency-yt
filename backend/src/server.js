@@ -5,10 +5,11 @@ import cors from "cors"
 
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
-// import { connectDB } from "./lib/db.js"
 import { ENV } from "./lib/env.js"
 // import { app, server } from "./lib/socket.js"
 import http from "http"
+import { connectDB } from "./lib/db-mongoose.js"
+import { runDb } from "./lib/db-mongoDb.js"
 
 const app = express()
 const server = http.createServer(app)
@@ -33,4 +34,6 @@ if (process.env.NODE_ENV === "production") {
 
 server.listen(PORT, () => {
     console.log("Server running on port: " + PORT)
+    connectDB()
+    // runDb().catch(console.dir)
 })
