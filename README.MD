@@ -1,8 +1,12 @@
 <h1 align="center">✨ Full-Stack Chat App with Auth & Emails ✨</h1>
 
+## ABOUT
+
+hosting project on sevalla, that can run the both frontend and backend application just in one same repo project (not separrated frontend and backend) so it will run from root package.json
+
 ![Demo App](/frontend/public/screenshot-for-readme.png)
 
-Highlights:
+### Highlights:
 
 - 🔐 Custom JWT Authentication (no 3rd-party auth)
 - ⚡ Real-time Messaging via Socket.io
@@ -19,6 +23,10 @@ Highlights:
 - 🚀 Easy Deployment (free-tier friendly with Sevalla)
 
 ---
+
+### Frontend (`/frontend`)
+
+- Tailwind css
 
 ## 🧪 .env Setup
 
