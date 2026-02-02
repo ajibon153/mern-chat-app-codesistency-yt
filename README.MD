@@ -4,6 +4,8 @@
 
 hosting project on sevalla, that can run the both frontend and backend application just in one same repo project (not separrated frontend and backend) so it will run from root package.json
 
+sevalla login account using github account
+
 ![Demo App](/frontend/public/screenshot-for-readme.png)
 
 ### Highlights:
@@ -31,6 +33,8 @@ hosting project on sevalla, that can run the both frontend and backend applicati
 ## 🧪 .env Setup
 
 ### Backend (`/backend`)
+
+- database using mongodb aj**\*\***g@gmail.com
 
 ```bash
 PORT=3000
