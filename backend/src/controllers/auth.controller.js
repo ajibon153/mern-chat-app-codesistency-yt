@@ -41,7 +41,7 @@ export const signup = async (req, res) => {
                     id: newUser._id,
                     fullName: newUser.fullName,
                     email: newUser.email,
-                    profilePic: user.profilePic,
+                    profilePic: newUser.profilePic,
                     token
                 },
                 message: "User created successfully"
