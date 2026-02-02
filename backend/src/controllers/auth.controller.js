@@ -1,3 +1,4 @@
+import cloudinary from "../lib/cloudinary.js"
 import { generateToken } from "../lib/utils.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
@@ -100,8 +101,24 @@ export const logout = async (req, res) => {
 }
 
 export const updateProfile = async (req, res) => {
-    res.cookie("jwt", "", {
-        maxAge: 0 // expire the cookie immediately
-    })
-    res.status(200).json({ message: "Logout successful" })
+    try {
+        const { profilePic } = req.body
+        if (!profilePic) return res.status(400).json({ message: "Profile picture is required" })
+
+        const userId = req.user._id
+
+        const uploadPicture = await cloudinary.uploader.upload(profilePic)
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { profilePic: uploadPicture.secure_url },
+            { new: true }
+        )
+        res.status(200).json({
+            data: updatedUser,
+            message: "Profile updated successfully"
+        })
+    } catch (error) {
+        console.log("error", error)
+        res.status(500).json({ message: "Server Error in updateProfile controller: " + error })
+    }
 }

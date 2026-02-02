@@ -1,16 +1,20 @@
-import { ENV } from "../lib/env"
+import { ENV } from "../lib/env.js"
 import jwt from "jsonwebtoken"
+import User from "../models/user.model.js"
 
 export const protectedRoute = async (req, res, next) => {
     try {
         const token = req.cookies.jwt
+        console.log("token", token)
 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" })
         }
 
         const decoded = jwt.verify(token, ENV.JWT_SECRET)
-        if (!decoded || !decoded.userId) {
+        console.log("decoded", decoded)
+
+        if (!decoded) {
             return res.status(401).json({ message: "Unauthorized: Invalid token" })
         }
 
@@ -21,6 +25,6 @@ export const protectedRoute = async (req, res, next) => {
     } catch (error) {
         console.log("Error in auth middleware:", error)
 
-        return res.status(401).json({ message: "Unauthorized: Invalid token" })
+        return res.status(500).json({ message: "Server Error in auth middleware: " + error.message })
     }
 }
