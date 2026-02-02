@@ -1,15 +1,15 @@
 import express from "express"
+import { getAllContacts, getChatPartners, getMessagesByUserId, sendMessage } from "../controllers/message.controller.js"
+import { protectedRoute } from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 
-router.get("/get", (req, res) => {
-    // handle login
-    res.status(200).json({ message: "Messages retrieved successfully" })
-})
+router.use(protectedRoute)
 
-router.post("/send", (req, res) => {
-    // handle login
-    res.status(200).json({ message: "Message sent successfully" })
-})
+router.get("/contacts", getAllContacts)
+router.get("/chats", getChatPartners) // show all contacts that had chat
+router.get("/chat/:chatId", getMessagesByUserId)
+
+router.post("/send/:chatId", sendMessage)
 
 export default router
