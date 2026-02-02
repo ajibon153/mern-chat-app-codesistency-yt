@@ -84,3 +84,8 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## SECTION NOT IMPLEMENTED YET
+
+- 'resend' email send after register user
+- rate limitting with arcjet, example on rapid login [02:35:17]
