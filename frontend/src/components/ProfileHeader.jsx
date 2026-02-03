@@ -21,8 +21,8 @@ function ProfileHeader() {
 
         reader.onloadend = async () => {
             const base64Image = reader.result
-            setSelectedImg(base64Image)
             await updateProfile({ profilePic: base64Image })
+            setSelectedImg(base64Image)
         }
     }
     return (
@@ -56,7 +56,7 @@ function ProfileHeader() {
 
                     {/* USERNAME & ONLINE TEXT */}
                     <div>
-                        <h3 className="text-slate-200 font-medium text-base max-w-[180px] truncate">
+                        <h3 className="text-slate-200 font-medium text-base max-w-[130px] truncate">
                             {authUser.fullName}
                         </h3>
 
