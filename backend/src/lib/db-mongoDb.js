@@ -1,7 +1,7 @@
 import pkg from "mongodb"
 
 const { MongoClient, ServerApiVersion } = pkg
-const uri = "mongodb+srv://root:root@node-crud.b2tfqn3.mongodb.net/?appName=node-crud"
+const uri = "mongodb://root:root@node-crud.b2tfqn3.mongodb.net/?appName=node-crud"
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {

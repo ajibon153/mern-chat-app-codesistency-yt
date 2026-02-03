@@ -24,7 +24,7 @@ export const getChatPartners = async (req, res) => {
         })
 
         const chatPartnerIds = [
-            ...new Set()(
+            ...new Set(
                 messages.map((msg) =>
                     msg.senderId.toString() === loggedInUserId.toString()
                         ? msg.receiverId.toString()
@@ -36,7 +36,7 @@ export const getChatPartners = async (req, res) => {
         const chatPartner = await User.find({ _id: { $in: chatPartnerIds } }).select("-password")
         res.status(200).json({ data: chatPartner, message: "Chat partners retrieved successfully" })
     } catch (error) {
-        console.log("Error getAllContacts", error)
+        console.log("Error getChatPartners", error)
         res.status(500).json({ message: "Server Error in get all contacts controller: " + error.message })
     }
 }
@@ -44,15 +44,12 @@ export const getChatPartners = async (req, res) => {
 export const getMessagesByUserId = async (req, res) => {
     try {
         const myId = req.user._id
-        const otherUserId = req.params.chatId
+        const { chatId: userToChatId } = req.params
 
-        // me and you
-        // i send you the message
-        // you send me the message
         const messages = await Message.find({
             $or: [
-                { sender: myId, receiver: otherUserId },
-                { sender: otherUserId, receiver: myId }
+                { senderId: myId, receiverId: userToChatId },
+                { senderId: userToChatId, receiverId: myId }
             ]
         }).sort({ createdAt: 1 }) // sort by createdAt in ascending order
 
@@ -68,8 +65,6 @@ export const sendMessage = async (req, res) => {
         const { text, image } = req.body
         const senderId = req.user._id
         const receiverId = req.params.chatId
-        console.log("senderId", senderId)
-        console.log("receiverId", receiverId)
 
         let imageUrl
         if (image) {
