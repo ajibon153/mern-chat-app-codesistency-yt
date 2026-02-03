@@ -10,7 +10,7 @@ export const useChatStore = create((set, get) => ({
     selectedUser: null,
     isUserLoading: false,
     isMessagesLoading: false,
-    isSoundEnabled: localStorage.getItem("isSoundEnabled") === "true",
+    isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) === true,
 
     setActiveTab: (tab) => set({ activeTab: tab }),
     setSelectedUser: (user) => set({ selectedUser: user }),
@@ -25,7 +25,7 @@ export const useChatStore = create((set, get) => ({
             set({ isUserLoading: true })
             const res = await axiosInstance.get("/messages/contacts")
             set({ allContacts: res?.data?.data })
-            toast.success("Contacts loaded successfully!")
+            // toast.success("Contacts loaded successfully!")
         } catch (error) {
             toast.error(error.response.data.message)
         } finally {
@@ -33,16 +33,45 @@ export const useChatStore = create((set, get) => ({
         }
     },
 
-    getMyPartnerChats: async () => {
+    getMyChatPartners: async () => {
         try {
             set({ isUserLoading: true })
-            const res = await axiosInstance.post("/messages/chats")
-            set({ chats: res.data })
-            toast.success("Chats loaded successfully!")
+            const res = await axiosInstance.get("/messages/chats")
+            set({ chats: res.data?.data })
+            // toast.success("Chats loaded successfully!")
         } catch (error) {
             toast.error(error.response.data.message)
         } finally {
             set({ isUserLoading: false })
         }
-    }
+    },
+    getMessagesByUserId: async (userId) => {
+        try {
+            set({ isMessagesLoading: true })
+            const res = await axiosInstance.get("/messages/chat/" + userId)
+            set({ messages: res.data?.data })
+            toast.success("Messages loaded successfully!")
+        } catch (error) {
+            toast.error(error.response.data.message)
+        } finally {
+            set({ isMessagesLoading: false })
+        }
+    },
+    sendMessage: async (messageData) => {
+        try {
+            const userId = get().selectedUser._id
+            const res = await axiosInstance.post("/messages/send/" + userId, messageData)
+            const oldMessage = get().messages || []
+            const newMessage = res.data?.data
+            console.log("oldMessage", oldMessage)
+            console.log("newMessage", newMessage)
+
+            set({ messages: [...oldMessage, newMessage] })
+            toast.success("Messages send successfully!")
+        } catch (error) {
+            toast.error(error.response.data.message)
+        }
+    },
+    subscribeToMessages: async () => {},
+    unsubscribeFromMessages: async () => {}
 }))
