@@ -6,13 +6,9 @@ import cors from "cors"
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from "./routes/message.route.js"
 import { ENV } from "./lib/env.js"
-// import { app, server } from "./lib/socket.js"
-import http from "http"
+import { app, server } from "./lib/socket.js"
 import { connectDB } from "./lib/db-mongoose.js"
 import { runDb } from "./lib/db-mongoDb.js"
-
-const app = express()
-const server = http.createServer(app)
 
 const __dirname = path.resolve()
 
