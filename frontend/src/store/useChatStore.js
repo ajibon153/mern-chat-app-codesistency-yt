@@ -1,6 +1,7 @@
 import { create } from "zustand"
 import { axiosInstance } from "../lib/axios"
 import toast from "react-hot-toast"
+import { useAuthStore } from "./useAuthStore"
 
 export const useChatStore = create((set, get) => ({
     allContacts: [],
@@ -10,6 +11,7 @@ export const useChatStore = create((set, get) => ({
     selectedUser: null,
     isUserLoading: false,
     isMessagesLoading: false,
+    isMessagesSend: false,
     isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) === true,
 
     setActiveTab: (tab) => set({ activeTab: tab }),
@@ -27,7 +29,7 @@ export const useChatStore = create((set, get) => ({
             set({ allContacts: res?.data?.data })
             // toast.success("Contacts loaded successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message || "Something went wrong while loading contacts")
         } finally {
             set({ isUserLoading: false })
         }
@@ -40,7 +42,7 @@ export const useChatStore = create((set, get) => ({
             set({ chats: res.data?.data })
             // toast.success("Chats loaded successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message || "Something went wrong while getting chats")
         } finally {
             set({ isUserLoading: false })
         }
@@ -52,24 +54,43 @@ export const useChatStore = create((set, get) => ({
             set({ messages: res.data?.data })
             toast.success("Messages loaded successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message || "Something went wrong while getting messages")
         } finally {
             set({ isMessagesLoading: false })
         }
     },
     sendMessage: async (messageData) => {
-        try {
-            const userId = get().selectedUser._id
-            const res = await axiosInstance.post("/messages/send/" + userId, messageData)
-            const oldMessage = get().messages || []
-            const newMessage = res.data?.data
-            console.log("oldMessage", oldMessage)
-            console.log("newMessage", newMessage)
+        const { selectedUser, messages } = get()
+        const { authUser } = useAuthStore.getState()
 
-            set({ messages: [...oldMessage, newMessage] })
-            toast.success("Messages send successfully!")
+        const tempId = `temp-${Date.now()}`
+
+        const optimisticMessage = {
+            _id: tempId,
+            senderId: authUser._id,
+            receiverId: selectedUser._id,
+            text: messageData.text,
+            image: messageData.image,
+            createdAt: new Date().toISOString(),
+            isOptimistic: true // flag to identify optimistic messages (optional)
+        }
+        // immidetaly update the ui by adding the message
+        set({ messages: [...messages, optimisticMessage] })
+
+        try {
+            set({ isMessagesSend: true })
+            const res = await axiosInstance.post(`/messages/send123/${selectedUser._id}`, messageData)
+
+            set({ messages: messages.concat(res.data?.data) })
+            // toast.success("Messages send successfully!")
+            return true
         } catch (error) {
-            toast.error(error.response.data.message)
+            set({ messages: messages })
+
+            toast.error(error.response.data.message || error?.message || "Something went wrong while sending message")
+            return false
+        } finally {
+            set({ isMessagesSend: false })
         }
     },
     subscribeToMessages: async () => {},

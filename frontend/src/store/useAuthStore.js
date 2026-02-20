@@ -30,7 +30,7 @@ export const useAuthStore = create((set) => ({
 
             toast.success("Account created successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message)
         } finally {
             set({ isSigningUp: false })
         }
@@ -41,10 +41,13 @@ export const useAuthStore = create((set) => ({
         try {
             const res = await axiosInstance.post("/auth/login", data)
             set({ authUser: res.data?.data })
+            console.log("res", res)
 
             toast.success("Logged in successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            console.log("error", error)
+
+            toast.error(error.response.data.message || error?.message)
         } finally {
             set({ isLoggingIn: false })
         }
@@ -56,7 +59,7 @@ export const useAuthStore = create((set) => ({
             set({ authUser: null })
             toast.success("Logged out successfully!")
         } catch (error) {
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message)
         }
     },
 
@@ -69,7 +72,7 @@ export const useAuthStore = create((set) => ({
         } catch (error) {
             console.log("Error in update profileL: ", error)
 
-            toast.error(error.response.data.message)
+            toast.error(error.response.data.message || error?.message)
         } finally {
             set({ isUpdateProfile: false })
         }
