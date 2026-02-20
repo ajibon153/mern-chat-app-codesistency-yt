@@ -74,7 +74,6 @@ export const useChatStore = create((set, get) => ({
             createdAt: new Date().toISOString(),
             isOptimistic: true // flag to identify optimistic messages (optional)
         }
-        // immidetaly update the ui by adding the message
         set({ messages: [...messages, optimisticMessage] })
 
         try {
@@ -82,7 +81,6 @@ export const useChatStore = create((set, get) => ({
             const res = await axiosInstance.post(`/messages/send123/${selectedUser._id}`, messageData)
 
             set({ messages: messages.concat(res.data?.data) })
-            // toast.success("Messages send successfully!")
             return true
         } catch (error) {
             set({ messages: messages })
