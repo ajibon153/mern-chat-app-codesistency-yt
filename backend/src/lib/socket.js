@@ -26,13 +26,13 @@ io.on("connection", (socket) => {
     userSocketMap[userId] = socket.id
 
     // is to used to send ievents to all connected clients
-    io.emmit("getOnlineUsers", Object.keys(userSocketMap))
+    io.emit("getOnlineUsers", Object.keys(userSocketMap))
 
     // socke.on we listen for events from client and socket
     socket.on("disconnect", () => {
         console.log("A user disconnected", socket.user.fullName)
         delete userSocketMap[userId]
-        io.emmit("getOnlineUsers", Object.keys(userSocketMap))
+        io.emit("getOnlineUsers", Object.keys(userSocketMap))
     })
 })
 

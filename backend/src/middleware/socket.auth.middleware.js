@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import User from "../models/User.js"
+import User from "../models/user.model.js"
 import { ENV } from "../lib/env.js"
 import { log } from "console"
 
