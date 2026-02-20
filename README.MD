@@ -84,12 +84,3 @@ cd frontend
 npm install
 npm run dev
 ```
-
-## SECTION NOT IMPLEMENTED YET
-
-- 'resend' email send after register user
-- rate limitting with arcjet, example on rapid login [02:35:17]
-- BE : handle error upload image large file [05:10:00]
-- BE : send Message concat,
-- BE : show message still empty message from api
-- websocket
